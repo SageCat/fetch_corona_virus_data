@@ -21,7 +21,7 @@ def write_db(sql, db_data=()):
         cursor = conn.cursor()
     except Exception as e:
         print(e)
-        logging.error('数据库连接失败:%s' % e)
+        logging.error('connect to database failed:%s' % e)
         return False
 
     try:
@@ -29,7 +29,7 @@ def write_db(sql, db_data=()):
         conn.commit()
     except Exception as e:
         conn.rollback()
-        logging.error('数据写入失败:%s' % e)
+        logging.error('data write failed:%s' % e)
         return False
     finally:
         cursor.close()
