@@ -10,7 +10,7 @@ db_pass = '123456'
 db_ip = '127.0.0.1'
 db_port = 3306
 
-file_handler = codecs.open('log.txt', 'w', 'utf-8')
+file_handler = codecs.open('../../log/log.txt', 'w', 'utf-8')
 history_data_url = []
 china_history_data_url = []
 
