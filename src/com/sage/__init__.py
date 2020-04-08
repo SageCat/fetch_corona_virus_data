@@ -81,44 +81,44 @@ for i in range(0, len(history_data_url)):
         file_handler.write('world_history_data:' + str(data) + '\n')
         write_db(sql, data)
 
-# # china today data
-# original_data = request.urlopen(url).read()
-# original_data = original_data.decode("utf-8")
-# filtered_data = re.findall('window.getAreaStat(.*?)id="getIndexRecommendList2', original_data)
-# china_today = re.findall('provinceName(.*?),"cities', str(filtered_data))
-# for i in range(0, len(china_today)):
-#     china_today[i] = '{"provinceName' + china_today[i] + '}'
+# china today data
+original_data = request.urlopen(url).read()
+original_data = original_data.decode("utf-8")
+filtered_data = re.findall('window.getAreaStat(.*?)id="getIndexRecommendList2', original_data)
+china_today = re.findall('provinceName(.*?),"cities', str(filtered_data))
+for i in range(0, len(china_today)):
+    china_today[i] = '{"provinceName' + china_today[i] + '}'
+
+for j in china_today:
+    temp = eval(str(j))
+
+    sql = 'INSERT INTO china_today_data(provinceName,provinceShortName,currentConfirmedCount,confirmedCount,suspectedCount,curedCount,deadCount,comment,locationId,statisticsData) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)'
+    data = (temp['provinceName'], temp['provinceShortName'], temp['currentConfirmedCount'], temp['confirmedCount'],
+            temp['suspectedCount'], temp['curedCount'], temp['deadCount'], temp['comment'], temp['locationId'],
+            temp['statisticsData'])
+    china_history_data_url.append(temp['statisticsData'])
+    print('china today data:', data)
+    file_handler.write('china today data:' + str(data) + '\n')
+    write_db(sql, data)
 #
-# for j in china_today:
-#     temp = eval(str(j))
-#
-#     sql = 'INSERT INTO china_today_data(provinceName,provinceShortName,currentConfirmedCount,confirmedCount,suspectedCount,curedCount,deadCount,comment,locationId,statisticsData) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)'
-#     data = (temp['provinceName'], temp['provinceShortName'], temp['currentConfirmedCount'], temp['confirmedCount'],
-#             temp['suspectedCount'], temp['curedCount'], temp['deadCount'], temp['comment'], temp['locationId'],
-#             temp['statisticsData'])
-#     china_history_data_url.append(temp['statisticsData'])
-#     print('china today data:', data)
-#     file_handler.write('china today data:' + str(data) + '\n')
-#     write_db(sql, data)
-# #
-# # # china history data
-# for i in range(0, len(china_history_data_url)):
-#     history_data = request.urlopen(china_history_data_url[i]).read()
-#     history_data = history_data.decode('utf-8')
-#     history_data_detail = re.findall('{"confirmedCount"(.*?),"suspectedCountIncr"', history_data)
-#     for j in range(0, len(history_data_detail)):
-#         history_data_detail[j] = '{"confirmedCount"' + history_data_detail[j] + '}'
-#     for k in history_data_detail:
-#         temp = eval(str(k))
-#         sql = 'INSERT INTO china_history_data(statisticsData,confirmedCount,confirmedIncr,curedCount,curedIncr,currentConfirmedCount,currentConfirmedIncr,dateId,deadCount,deadIncr,suspectedCount) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)'
-#         data = (
-#             china_history_data_url[i], temp['confirmedCount'], temp['confirmedIncr'], temp['curedCount'],
-#             temp['curedIncr'],
-#             temp['currentConfirmedCount'], temp['currentConfirmedIncr'], temp['dateId'], temp['deadCount'],
-#             temp['deadIncr'],
-#             temp['suspectedCount'])
-#         print('china_history_data:', data)
-#         file_handler.write('china_history_data:' + str(data) + '\n')
-#         write_db(sql, data)
+# # china history data
+for i in range(0, len(china_history_data_url)):
+    history_data = request.urlopen(china_history_data_url[i]).read()
+    history_data = history_data.decode('utf-8')
+    history_data_detail = re.findall('{"confirmedCount"(.*?),"suspectedCountIncr"', history_data)
+    for j in range(0, len(history_data_detail)):
+        history_data_detail[j] = '{"confirmedCount"' + history_data_detail[j] + '}'
+    for k in history_data_detail:
+        temp = eval(str(k))
+        sql = 'INSERT INTO china_history_data(statisticsData,confirmedCount,confirmedIncr,curedCount,curedIncr,currentConfirmedCount,currentConfirmedIncr,dateId,deadCount,deadIncr,suspectedCount) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)'
+        data = (
+            china_history_data_url[i], temp['confirmedCount'], temp['confirmedIncr'], temp['curedCount'],
+            temp['curedIncr'],
+            temp['currentConfirmedCount'], temp['currentConfirmedIncr'], temp['dateId'], temp['deadCount'],
+            temp['deadIncr'],
+            temp['suspectedCount'])
+        print('china_history_data:', data)
+        file_handler.write('china_history_data:' + str(data) + '\n')
+        write_db(sql, data)
 
 file_handler.close()
