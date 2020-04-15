@@ -2,6 +2,8 @@ import logging
 import re
 import urllib.request as request
 import codecs
+from time import sleep
+
 import pymysql
 
 db_name = 'corona_virus'
@@ -64,6 +66,7 @@ for i in country_data:
 #
 # # extract the history data for every country_data
 for i in range(0, len(history_data_url)):
+    sleep(1)
     history_data = request.urlopen(history_data_url[i]).read()
     history_data = history_data.decode('utf-8')
     history_data_detail = re.findall('{"confirmedCount"(.*?),"suspectedCountIncr"', history_data)
@@ -103,6 +106,7 @@ for j in china_today:
 #
 # # china history data
 for i in range(0, len(china_history_data_url)):
+    sleep(1)
     history_data = request.urlopen(china_history_data_url[i]).read()
     history_data = history_data.decode('utf-8')
     history_data_detail = re.findall('{"confirmedCount"(.*?),"suspectedCountIncr"', history_data)
