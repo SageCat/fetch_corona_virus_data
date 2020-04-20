@@ -45,7 +45,6 @@ def write_db(sql, db_data=()):
 
 # data source website, it's from 丁香医生
 url = "http://ncov.dxy.cn/ncovh5/view/en_pneumonia"
-
 # extract data for world today
 data = request.urlopen(url).read()
 data = data.decode("utf-8")
@@ -61,7 +60,9 @@ for i in country_data:
     # transform json string into python data dictionary
     temp = eval(str(i))
     # define sql command for inserting data into database
-    sql = 'INSERT INTO world_today_data(countryType,continents,provinceId,provinceName,currentConfirmedCount,confirmedCount,suspectedCount,curedCount,deadCount,deadRate,countryShortCode,countryFullName,statisticsData) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)'
+    sql = 'INSERT INTO world_today_data(countryType,continents,provinceId,provinceName,currentConfirmedCount,' \
+          'confirmedCount,suspectedCount,curedCount,deadCount,deadRate,countryShortCode,countryFullName,statisticsData)' \
+          ' VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)'
     # get values from temp data dictionary by keys to pack them as data tuple
     data = (temp['countryType'], temp['continents'],
             temp['provinceId'], temp['provinceName'], temp['currentConfirmedCount'], temp['confirmedCount'],
